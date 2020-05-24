@@ -10,7 +10,7 @@ POPULATION = {
   'Bonaire, Saint Eustatius and Saba' => 25987
 }
 
-table = CSV.parse(File.read("./covd19_14_05_2020.csv"), headers: true)
+table = CSV.parse(File.read("./covid19_24_05_2020.csv"), headers: true)
 rows = table.size
 
 create_db = <<-SQL

@@ -14,9 +14,9 @@ table = CSV.parse(File.read("./covid19_28_05_2020.csv"), headers: true)
 rows = table.size
 
 create_db = <<-SQL
-DROP DATABASE IF EXISTS global_covid19;
-CREATE DATABASE global_covid19;
-USE global_covid19;
+DROP DATABASE IF EXISTS global_covid19_n;
+CREATE DATABASE global_covid19_n;
+USE global_covid19_n;
 SQL
 
 create_table = <<-SQL
@@ -32,14 +32,13 @@ CREATE TABLE reports (
   cases INT NOT NULL,
   deaths INT NOT NULL,
   region CHAR(64) NOT NULL,
-  continent CHAR(32) NOT NULL,
   FOREIGN KEY (region) REFERENCES regions(name)
 );
 SQL
 
 
 
-File.open('db_mysql.sql', 'w') do |f|
+File.open('db_mysql_n.sql', 'w') do |f|
   f.puts create_db
   f.puts create_table
 
@@ -50,7 +49,7 @@ File.open('db_mysql.sql', 'w') do |f|
     next if territories.include?(territory)
 
     f.puts ',' unless territories.empty?
-    
+
     territories << territory
     continent = row['continentExp']
     population = row['popData2018'] || POPULATION[territory]
@@ -58,14 +57,13 @@ File.open('db_mysql.sql', 'w') do |f|
   end
   f.puts ';'
 
-  f.puts 'INSERT INTO reports (reported_at, cases, deaths, region, continent) VALUES'
+  f.puts 'INSERT INTO reports (reported_at, cases, deaths, region) VALUES'
   table.each_with_index do |row, idx|
     date = "#{row['year']}-#{row['month']}-#{row['day']}"
     cases = row['cases']
     deaths = row['deaths']
     territory = row['countriesAndTerritories']
-    continent = row['continentExp']
-    f.write "('#{date}', #{cases}, #{deaths}, '#{territory}', '#{continent}')"
+    f.write "('#{date}', #{cases}, #{deaths}, '#{territory}')"
     f.puts ',' if idx < rows - 1
   end
   f.puts ';'

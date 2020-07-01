@@ -7,10 +7,11 @@ POPULATION = {
   'Western_Sahara' => 567402,
   'Eritrea' => 5750433,
   'Anguilla' => 14731,
-  'Bonaire, Saint Eustatius and Saba' => 25987
+  'Bonaire, Saint Eustatius and Saba' => 25987,
+  'Cases_on_an_international_conveyance_Japan' => 126500000
 }
 
-table = CSV.parse(File.read("./covid19_05_06_2020.csv"), headers: true)
+table = CSV.parse(File.read("./covid19_30_06_2020.csv"), headers: true)
 rows = table.size
 
 create_db = <<-SQL
@@ -52,7 +53,7 @@ File.open('db_mysql_n.sql', 'w') do |f|
 
     territories << territory
     continent = row['continentExp']
-    population = row['popData2018'] || POPULATION[territory]
+    population = row['popData2019'] || POPULATION[territory]
     f.write "('#{territory}', '#{continent}', #{population})"
   end
   f.puts ';'

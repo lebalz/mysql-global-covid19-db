@@ -8,16 +8,27 @@ POPULATION = {
   'Eritrea' => 5750433,
   'Anguilla' => 14731,
   'Bonaire, Saint Eustatius and Saba' => 25987,
-  'Cases_on_an_international_conveyance_Japan' => 126500000
+  'Cases_on_an_international_conveyance_Japan' => 126500000,
+  'Wallis_and_Futuna' => 11562
 }
 
-table = CSV.parse(File.read("./covid19_30_06_2020.csv"), headers: true)
+table = CSV.parse(File.read("./covid19_22_04_2021.csv"), headers: true)
 rows = table.size
 
+# create_db = <<-SQL
+# DROP DATABASE IF EXISTS global_covid19;
+# CREATE DATABASE global_covid19;
+# USE global_covid19;
+# SQL
+
+header = <<-SQL
+# GLOBAL COVID 19 - 22.04.2021
+# from https://www.ecdc.europa.eu/en/publications-data/download-todays-data-geographic-distribution-covid-19-cases-worldwide
+SQL
+
 create_db = <<-SQL
-DROP DATABASE IF EXISTS global_covid19;
-CREATE DATABASE global_covid19;
-USE global_covid19;
+DROP TABLE reports;
+DROP TABLE regions;
 SQL
 
 create_table = <<-SQL
@@ -41,6 +52,7 @@ SQL
 
 
 File.open('db_mysql.sql', 'w') do |f|
+  f.puts header
   f.puts create_db
   f.puts create_table
 

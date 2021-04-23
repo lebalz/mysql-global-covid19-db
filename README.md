@@ -4,7 +4,7 @@ data from [ECDC](https://www.ecdc.europa.eu/en/publications-data/download-todays
 
 # [MySQL DB](db_mysql.sql)
 
-This database is for an educational purpose. Since the students don't know yet about joining tables, the table **reports** is not normalized and contains the redundant column "continent" fro the moment. 
+This database is for an educational purpose. Since the students don't know yet about joining tables, the table **reports** is not normalized and contains the redundant column "continent" for the moment. 
 
 ## Tables
 
